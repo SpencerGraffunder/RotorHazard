@@ -41,6 +41,7 @@ public:
 #define READ_FW_BUILDDATE 0x3E     // read firmware build date string
 #define READ_FW_BUILDTIME 0x3F     // read firmware build time string
 #define READ_FW_PROCTYPE 0x40      // read node processor type
+#define READ_VOLTAGE 0x45          // read timer input voltage
 
 #define WRITE_FREQUENCY 0x51
 #define WRITE_ENTER_AT_LEVEL 0x71

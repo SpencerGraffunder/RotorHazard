@@ -28,6 +28,7 @@ READ_FW_VERSION = 0x3D       # read firmware version string
 READ_FW_BUILDDATE = 0x3E     # read firmware build date string
 READ_FW_BUILDTIME = 0x3F     # read firmware build time string
 READ_FW_PROCTYPE = 0x40      # read node processor type
+READ_VOLTAGE = 0x45          # read timer input voltage
 
 WRITE_FREQUENCY = 0x51       # Sets frequency (2 byte)
 # WRITE_FILTER_RATIO = 0x70   # node API_level>=10 uses 16-bit value
@@ -136,6 +137,8 @@ class RHInterface(BaseHardwareInterface):
         self.intf_write_block_count = 0  # number of blocks write by all nodes
         self.intf_write_error_count = 0  # number of write errors for all nodes
         self.intf_error_report_limit = 0.0  # log if ratio of comm errors is larger
+
+        self.timer_voltage = 0
 
         self.nodes = Plugins(suffix='node')
         self.discover_nodes(*args, **kwargs)
@@ -399,6 +402,12 @@ class RHInterface(BaseHardwareInterface):
             self.set_exit_at_level(startThreshLowerNode.index, startThreshLowerNode.exit_at_level)
             startThreshLowerNode.start_thresh_lower_flag = False
             startThreshLowerNode.start_thresh_lower_time = 0
+
+        adc_reading = self.get_value_16(0, READ_VOLTAGE)
+        adc_bits = 10
+        calibration = 1.0
+        vref = 3.3
+        self.timer_voltage = adc_reading / pow(2, adc_bits) * vref * calibration
 
 
     #

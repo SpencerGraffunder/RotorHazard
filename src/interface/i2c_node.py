@@ -126,7 +126,7 @@ class I2CNode(Node):
             else:
                 self.firmware_timestamp_str = None
         except Exception:
-            logger.exception('Error fetching READ_FW_DATE/TIME for I2C node')
+            logger.exception('Error fetching READ_FW_DATE/TIME for I2C node')        
 
     def send_status_message(self, interface, msgTypeVal, msgDataVal):
         # send status message to node

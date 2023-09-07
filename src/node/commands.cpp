@@ -284,6 +284,9 @@ void Message::handleReadCommand(bool serialFlag)
             buffer.writeTextBlock(firmwareProcTypeString);
             break;
 
+        case READ_VOLTAGE:
+            buffer.write16(readVoltage());
+
         default:  // If an invalid command is sent, write nothing back, master must react
             LOG_ERROR("Invalid read command: ", command, HEX);
             actFlag = false;  // not valid activity
@@ -355,4 +358,8 @@ void Message::handleReadLapExtremums(mtime_t timeNowVal)
         buffer.write16(0);
         buffer.write16(0);
     }
+}
+
+uint16_t readVoltage() {
+    uint16_t reading = analogRead(VOLTAGE_MONITOR_PIN);
 }
